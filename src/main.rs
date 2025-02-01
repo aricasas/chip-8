@@ -2,7 +2,7 @@ mod cpu_state;
 
 use cpu_state::ComputerState;
 use macroquad::{
-    audio::{load_sound_from_bytes, play_sound, play_sound_once, stop_sound, PlaySoundParams},
+    audio::{load_sound_from_bytes, play_sound, stop_sound, PlaySoundParams},
     prelude::*,
 };
 

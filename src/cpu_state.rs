@@ -50,10 +50,13 @@ impl ComputerState {
         self.sound_timer_cycle();
     }
 
+    #[allow(non_snake_case)]
     fn cpu_cycle(&mut self) {
         // Fetch
-        let instruction: u16 = ((self.memory[self.pc as usize] as u16) << 8)
-            | ((self.memory[self.pc as usize + 1]) as u16);
+        let instruction: u16 = u16::from_be_bytes([
+            self.memory[self.pc as usize],
+            self.memory[self.pc as usize + 1],
+        ]);
         let nibbles: [u8; 4] = [
             (instruction >> 12 & 0xF) as u8,
             (instruction >> 8 & 0xF) as u8,
@@ -77,8 +80,10 @@ impl ComputerState {
             }
             [0x0, 0x0, 0xE, 0xE] => {
                 // Return from subroutine
-                self.pc = (self.memory[self.sp as usize] as u16) << 8;
-                self.pc |= self.memory[self.sp as usize + 1] as u16;
+                self.pc = u16::from_be_bytes([
+                    self.memory[self.sp as usize],
+                    self.memory[self.sp as usize + 1],
+                ]);
                 self.sp += 2;
             }
             [0x0, _, _, _] => {
